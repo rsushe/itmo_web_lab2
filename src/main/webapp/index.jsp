@@ -150,6 +150,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="js/validate.js"></script>
     <script src="js/graph.js"></script>
+    <script src="js/main.js"></script>
 </head>
 
 <body>
@@ -166,7 +167,7 @@
             <form method="post" id="form">
                 <fieldset>
                     <legend>Check hit</legend>
-                    <div class="form-field" onclick="check_x()">
+                    <div class="form-field">
                         <span>Choose X:</span>
                         <input type="radio" id="x1" name="x" value="-3"><label for="x1">-3</label>
                         <input type="radio" id="x2" name="x" value="-2"><label for="x2">-2</label>
@@ -181,7 +182,7 @@
                             <small></small>
                         </div>
                     </div>
-                    <div class="form-field" onclick="check_y()">
+                    <div class="form-field">
                         <span>Enter Y:</span>
                         <label for="y"></label><input type="text" name="y" id="y">
                         <div>
@@ -201,7 +202,7 @@
                     </div>
                     <div>
                         <input type="submit" id="submit" value="Submit">
-                        <input type="reset" id="clearForm" value="Clear form">
+                        <input type="reset" value="Clear form">
                         <input type="button" id="clearTable" value="Clear table">
                     </div>
                 </fieldset>
