@@ -1,4 +1,3 @@
-<%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -104,30 +103,23 @@
             color: red;
         }
 
-        input[type="submit"], input[type="button"] {
-            width: 45%;
+        input[type="submit"], input[type="reset"], input[type="button"] {
+            width: 30%;
             padding: 1em;
-            margin-left: 1em;
+            margin-left: 0.5em;
             background: #cce79f;
             border: 1px solid black;
             color: black;
             text-transform: uppercase;
         }
 
-        input[type="submit"]:hover, input[type="button"]:hover {
+        input[type="submit"]:hover, input[type="reset"]:hover, input[type="button"]:hover {
             background: #465c21;
             cursor: pointer;
         }
 
-        input[type="submit"]:focus, input[type="button"]:focus {
+        input[type="submit"]:focus, input[type="reset"]:focus, input[type="button"]:focus {
             outline: none;
-        }
-
-        line,
-        polygon,
-        path {
-            fill: #cce79f;
-            stroke: black;
         }
 
         .data {
@@ -138,39 +130,31 @@
 
         .left_data {
             margin-right: 15px;
-            width: 700px;
+            width: 800px;
         }
 
         .left_data #jxgbox {
-            /*display: flex;*/
             width: 500px;
             height: 300px;
         }
 
         .right_data {
-            flex: 1;
+            width: 700px;
         }
-
-
     </style>
 
     <script type="text/javascript" charset="UTF-8"
             src="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraphcore.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraph.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraph.css"/>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="js/validate.js"></script>
     <script src="js/graph.js"></script>
-    <script>
-        $(document).ready(function () {
-            $("#form input[name='clientDate']").val(new Date().toLocaleString());
-        });
-    </script>
 </head>
 
 <body>
 <header>
-    <span>Сущенко Роман Витальевич, группа ???, вариант 1251</span>
+    <span>Сущенко Роман Витальевич, группа P32131, вариант 1251</span>
 </header>
 <div class="data">
     <div class="left_data">
@@ -179,11 +163,10 @@
         </div>
         <!-- form div -->
         <div>
-            <form action="${pageContext.request.contextPath}/ControllerServlet" method="post" id="form"
-                  onsubmit="return validate_form();">
+            <form method="post" id="form">
                 <fieldset>
                     <legend>Check hit</legend>
-                    <div class="form-field">
+                    <div class="form-field" onclick="check_x()">
                         <span>Choose X:</span>
                         <input type="radio" id="x1" name="x" value="-3"><label for="x1">-3</label>
                         <input type="radio" id="x2" name="x" value="-2"><label for="x2">-2</label>
@@ -198,14 +181,14 @@
                             <small></small>
                         </div>
                     </div>
-                    <div class="form-field">
+                    <div class="form-field" onclick="check_y()">
                         <span>Enter Y:</span>
                         <label for="y"></label><input type="text" name="y" id="y">
                         <div>
                             <small></small>
                         </div>
                     </div>
-                    <div class="form-field">
+                    <div class="form-field" onclick="check_r()">
                         <span>Choose R:</span>
                         <input type="radio" id="r1" name="r" value="1"><label for="r1">1</label>
                         <input type="radio" id="r2" name="r" value="1.5"><label for="r2">1.5</label>
@@ -216,10 +199,10 @@
                             <small></small>
                         </div>
                     </div>
-                    <input type="hidden" value="cringe" name="clientDate">
                     <div>
                         <input type="submit" id="submit" value="Submit">
-                        <input type="button" id="clear" value="Clear table">
+                        <input type="reset" id="clearForm" value="Clear form">
+                        <input type="button" id="clearTable" value="Clear table">
                     </div>
                 </fieldset>
             </form>
@@ -238,19 +221,6 @@
             </tr>
             </thead>
             <tbody>
-            <c:if test="${not empty sessionScope.table}">
-                <c:forEach var="tableRow" items="${sessionScope.table}">
-                    <tr>
-                        <td>${tableRow.x}</td>
-                        <td>${tableRow.y}</td>
-                        <td>${tableRow.r}</td>
-                        <td>${tableRow.hit}</td>
-                        <td>${tableRow.clientDate}</td>
-                        <td>${tableRow.scriptWorkingTime} ms</td>
-                    </tr>
-                    <%--                        <c:out value="${tableRow}" />--%>
-                </c:forEach>
-            </c:if>
             </tbody>
         </table>
     </div>
