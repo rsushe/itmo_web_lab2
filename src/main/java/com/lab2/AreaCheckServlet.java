@@ -1,5 +1,7 @@
 package com.lab2;
 
+import org.json.JSONObject;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +23,7 @@ public class AreaCheckServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Integer x = parseInt(request.getParameter("x"));
+        Float x = parseFloat(request.getParameter("x"));
         Float y = parseFloat(request.getParameter("y"));
         Float r = parseFloat(request.getParameter("r"));
         LocalDateTime clientDate = parseDate(request.getParameter("clientDate"));
@@ -35,7 +37,13 @@ public class AreaCheckServlet extends HttpServlet {
             tableRows.add(newRow);
             httpSession.setAttribute("table", tableRows);
 
-            response.sendRedirect(request.getContextPath() + "/index.jsp");
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().println(new JSONObject(newRow));
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().println("Bad request, should be provided not null x, y, r and clientDate parameters");
         }
     }
 
@@ -47,7 +55,7 @@ public class AreaCheckServlet extends HttpServlet {
         }
     }
 
-    public TableRow formNewTableRow(int x, float y, float r, LocalDateTime clientDate) {
+    public TableRow formNewTableRow(float x, float y, float r, LocalDateTime clientDate) {
         long currentTime = System.currentTimeMillis();
         boolean isHit = isHitCircle(x, y, r) || isHitRectangle(x, y, r) || isHitTriangle(x, y, r);
         double scriptWorkingTime = System.currentTimeMillis() - currentTime;
@@ -55,38 +63,32 @@ public class AreaCheckServlet extends HttpServlet {
         return new TableRow(x, y, r, isHit, clientDate, scriptWorkingTime);
     }
 
-    private boolean isHitCircle(int x, float y, float r) {
-        return x <= 0 && y <= 0 && (Math.pow(x, 2) + Math.pow(y, 2) <= Math.pow(r / 2, 2));
+    private boolean isHitCircle(float x, float y, float r) {
+        return x <= 0 && y >= 0 && (Math.pow(x, 2) + Math.pow(y, 2) <= Math.pow(r / 2, 2));
     }
 
-    private boolean isHitRectangle(int x, float y, float r) {
+    private boolean isHitRectangle(float x, float y, float r) {
         return x >= 0 && x <= r && y <= 0 && y >= -r / 2;
     }
 
-    private boolean isHitTriangle(int x, float y, float r) {
+    private boolean isHitTriangle(float x, float y, float r) {
         return x >= 0 && y >= 0 && r - y - x >= 0;
     }
 
-    private Integer parseInt(String value) {
-        try {
-            return Integer.parseInt(value);
-        } catch (NullPointerException | NumberFormatException e) {
-            return null;
-        }
-    }
-
     private Float parseFloat(String value) {
+        if (value == null) return null;
         try {
             return Float.parseFloat(value);
-        } catch (NullPointerException | NumberFormatException e) {
+        } catch (NumberFormatException e) {
             return null;
         }
     }
 
     private LocalDateTime parseDate(String value) {
+        if (value == null) return null;
         try {
             return LocalDateTime.parse(value, DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm:ss"));
-        } catch (NullPointerException | DateTimeParseException e) {
+        } catch (DateTimeParseException e) {
             return null;
         }
     }
