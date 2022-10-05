@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@WebServlet("/AreaCheckServlet")
+@WebServlet(urlPatterns = "/AreaCheckServlet")
 public class AreaCheckServlet extends HttpServlet {
 
     public AreaCheckServlet() {

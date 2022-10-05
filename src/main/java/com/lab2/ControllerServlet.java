@@ -9,7 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
-@WebServlet(value = "/ControllerServlet")
+@WebServlet(urlPatterns = "/ControllerServlet")
 public class ControllerServlet extends HttpServlet {
 
     @Override
