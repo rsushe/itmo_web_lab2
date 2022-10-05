@@ -58,6 +58,9 @@ $(document).ready(function () {
     });
 
     board.on("down", function (event) {
+        if (event.button === 2 || event.target.className === 'JXG_navigation_button') {
+            return;
+        }
         if (check_r()) {
             let coords = board.getUsrCoordsOfMouse(event);
             submitForm(board, pointsById, coords[0], coords[1], $('input[name="r"]:checked').val());
